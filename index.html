@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0a0a0b"><title>ZapPlay | Central de Aplicativos</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar"><a class="brand" href="#"><span class="brand-mark">▶</span><span>ZAP<span>PLAY</span><small>CENTRAL DE APLICATIVOS</small></span></a>
+<nav><a href="#dispositivos">Dispositivos</a><a href="#apps">Aplicativos</a><a href="#tutoriais">Tutoriais</a><a href="#faq">Dúvidas</a></nav>
+<a class="btn btn-outline" id="supportLink" href="#" target="_blank" rel="noopener">Suporte</a></header>
+<main>
+<section class="hero"><div class="hero-copy"><span class="eyebrow">BEM-VINDO À ZAPPLAY</span><h1>Seu entretenimento<br><em>começa aqui.</em></h1><p>Encontre aplicativos, descubra como instalar e tenha ajuda sempre que precisar.</p><div class="hero-actions"><a class="btn btn-red" href="#apps">Explorar aplicativos</a><a class="btn btn-outline" href="#tutoriais">Ver tutoriais</a></div></div><div class="hero-art"><div class="screen"><div class="screen-glow"></div><span>▶</span><b>ZAPPLAY</b><small>ENTRETENIMENTO SEM LIMITES</small></div></div></section>
+<section class="section" id="dispositivos"><div class="section-head"><div><span class="eyebrow">COMPATIBILIDADE</span><h2>Escolha seu dispositivo</h2></div><p>Encontre a opção ideal para o seu aparelho.</p></div><div class="device-grid" id="deviceGrid"></div></section>
+<section class="section section-dark" id="apps"><div class="section-head"><div><span class="eyebrow">CENTRAL DE DOWNLOADS</span><h2>Aplicativos disponíveis</h2></div><select id="deviceFilter" aria-label="Filtrar por dispositivo"><option value="">Todos os dispositivos</option></select></div><div class="app-grid" id="appGrid"></div></section>
+<section class="section" id="tutoriais"><div class="section-head"><div><span class="eyebrow">PASSO A PASSO</span><h2>Tutoriais de instalação</h2></div><p>Instruções para configurar seu aplicativo.</p></div><div class="tutorial-list" id="tutorialList"></div></section>
+<section class="section section-dark" id="faq"><div class="section-head"><div><span class="eyebrow">CENTRAL DE AJUDA</span><h2>Perguntas frequentes</h2></div></div><div class="faq-list" id="faqList"></div></section>
+<section class="support-banner"><div><span class="eyebrow">PRECISA DE AJUDA?</span><h2>Estamos aqui para ajudar.</h2><p>Fale com nossa equipe de suporte.</p></div><a class="btn btn-red" id="supportButton" href="#" target="_blank" rel="noopener">Falar com suporte ↗</a></section>
+</main><footer><a class="brand" href="#"><span class="brand-mark">▶</span><span>ZAP<span>PLAY</span></span></a><small>© <span id="year"></span> ZapPlay. Todos os direitos reservados.</small><a href="admin.html">Área administrativa</a></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script src="app.js"></script>
+</body></html>

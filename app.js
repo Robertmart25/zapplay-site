@@ -1,0 +1,24 @@
+(() => {
+const cfg=window.ZAPPLAY_CONFIG||{}, ready=cfg.SUPABASE_URL?.startsWith("https://")&&cfg.SUPABASE_ANON_KEY&&!cfg.SUPABASE_ANON_KEY.startsWith("COLE_");
+const supabase=ready&&window.supabase?window.supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY):null;
+const demo={
+ devices:[{id:"samsung",name:"Samsung Smart TV",icon:"▣",description:"Instalação em televisores Samsung"},{id:"lg",name:"LG Smart TV",icon:"▣",description:"Instalação em televisores LG"},{id:"android",name:"Android TV / Google TV",icon:"◫",description:"TVs e aparelhos Android"},{id:"tvbox",name:"TV Box",icon:"▰",description:"Dispositivos TV Box"},{id:"fire",name:"Fire TV Stick",icon:"⌁",description:"Amazon Fire TV"},{id:"mobile",name:"Celular e Tablet",icon:"▯",description:"Android e iOS"},{id:"computer",name:"Computador",icon:"▱",description:"Acesso pelo navegador"},{id:"projector",name:"Projetor Android",icon:"◉",description:"Projetores com Android"}],
+ apps:[{id:"a1",name:"ZUXO Player",description:"Aplicativo para dispositivos compatíveis.",download_url:"",device_ids:["samsung","lg","android"],badge:"Recomendado"},{id:"a2",name:"Easy Player",description:"Uma opção prática para dispositivos Android.",download_url:"",device_ids:["android","tvbox","mobile"],badge:"Android"},{id:"a3",name:"Slim Smart",description:"Alternativa para aparelhos compatíveis.",download_url:"",device_ids:["samsung","lg","android","tvbox"],badge:"Compatível"},{id:"a4",name:"Pulse Player",description:"Interface leve e moderna.",download_url:"",device_ids:["android","tvbox","fire","mobile"],badge:"Novidade"}],
+ tutorials:[{id:"t1",title:"Como instalar na Samsung Smart TV",body:"Abra a loja de aplicativos da TV, pesquise o aplicativo indicado e instale. Depois, abra o app e siga os dados de configuração fornecidos pelo suporte."},{id:"t2",title:"Como instalar na LG Smart TV",body:"Acesse a LG Content Store, procure o aplicativo indicado e instale. Abra o aplicativo e configure com os dados recebidos."},{id:"t3",title:"Como instalar no Android TV ou TV Box",body:"Abra a Play Store ou siga o método de instalação informado pelo suporte. Instale o aplicativo compatível e insira seus dados de acesso."}],
+ faqs:[{id:"f1",question:"Onde encontro o aplicativo correto?",answer:"Selecione seu dispositivo na seção de compatibilidade para ver as opções cadastradas."},{id:"f2",question:"Como faço a instalação?",answer:"Acesse a área de tutoriais e escolha o passo a passo do seu dispositivo."},{id:"f3",question:"Não consegui configurar. O que faço?",answer:"Entre em contato com o suporte ZapPlay para receber orientação."}]
+};
+const $=s=>document.querySelector(s), esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let data=structuredClone(demo);
+async function load(){if(supabase){for(const table of ["devices","apps","tutorials","faqs"]){const {data:rows,error}=await supabase.from(table).select("*").order("created_at",{ascending:true});if(!error&&rows?.length)data[table]=rows;}}render();}
+function render(){
+ const dg=$("#deviceGrid"),filter=$("#deviceFilter"),ag=$("#appGrid"),tl=$("#tutorialList"),fl=$("#faqList");
+ dg.innerHTML=data.devices.map(d=>`<button class="device-card" data-device="${esc(d.id)}"><span>${esc(d.icon||"▣")}</span><b>${esc(d.name)}</b><small>${esc(d.description||"Veja os aplicativos disponíveis")}</small></button>`).join("");
+ filter.innerHTML='<option value="">Todos os dispositivos</option>'+data.devices.map(d=>`<option value="${esc(d.id)}">${esc(d.name)}</option>`).join("");
+ function apps(){const id=filter.value;const rows=data.apps.filter(a=>!id||(a.device_ids||[]).includes(id));ag.innerHTML=rows.length?rows.map(a=>`<article class="app-card"><div class="app-icon">▶</div><div><span class="pill">${esc(a.badge||"Aplicativo")}</span><h3>${esc(a.name)}</h3><p>${esc(a.description||"")}</p><a class="btn btn-small ${a.download_url?"btn-red":"btn-muted"}" ${a.download_url?`href="${esc(a.download_url)}" target="_blank" rel="noopener"`:'href="#" onclick="return false" title="Link ainda não cadastrado"'}>${a.download_url?"Baixar / acessar":"Download em breve"}</a></div></article>`).join(""):'<p class="empty">Nenhum aplicativo encontrado para este dispositivo.</p>';}
+ apps();filter.addEventListener("change",apps);
+ tl.innerHTML=data.tutorials.map(t=>`<details class="tutorial"><summary>${esc(t.title)}</summary><p>${esc(t.body)}</p></details>`).join("");
+ fl.innerHTML=data.faqs.map(f=>`<details class="tutorial"><summary>${esc(f.question)}</summary><p>${esc(f.answer)}</p></details>`).join("");
+ dg.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{filter.value=b.dataset.device;filter.dispatchEvent(new Event("change"));location.hash="apps";}));
+}
+$("#supportLink").href=cfg.SUPPORT_URL||"#";$("#supportButton").href=cfg.SUPPORT_URL||"#";$("#year").textContent=new Date().getFullYear();load();
+})();
